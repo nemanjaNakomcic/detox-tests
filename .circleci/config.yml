@@ -90,4 +90,4 @@ jobs:
       - run:
           name: Test Download Speed and Log It
           command: |
-            curl -o /dev/null -s -w "Total time: %{time_total}s\nDownload speed: %{speed_download} bytes/sec\n" https://noaa-normals-pds.s3.amazonaws.com/normals-daily/1981-2010/archive/normals-daily.tar.gzhttps://example.com/largefile.zip
+            curl -o /dev/null -s -w "Total time: %{time_total}s\nDownload speed: %{speed_download} bytes/sec\n" https://noaa-normals-pds.s3.amazonaws.com/normals-daily/1981-2010/archive/normals-daily.tar.gz
