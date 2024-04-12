@@ -80,7 +80,6 @@
 #       - test_detox:
 #           requires:
 #             - build_detox
-
 version: 2.1
 jobs:
   build:
@@ -89,6 +88,6 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Test Download Speed
+          name: Test Download Speed and Log It
           command: |
-            curl -o /dev/null -s -w 'Total time: %{time_total}s\n' https://example.com/largefile.zip
+            curl -o /dev/null -s -w "Total time: %{time_total}s\nDownload speed: %{speed_download} bytes/sec\n" https://example.com/largefile.zip
