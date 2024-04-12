@@ -1,82 +1,94 @@
+# version: 2.1
+
+# orbs:
+#   node: circleci/node@4.1.0
+
+# jobs:
+#   install_dependencies:
+#     docker:
+#       - image: cimg/node:21.7.3
+#     steps:
+#       - checkout
+#       - node/install-packages:
+#           pkg-manager: yarn
+
+#   build_ios:
+#       macos:
+#         xcode: "15.2.0"
+#       steps:
+#         - checkout
+#         - run:
+#             name: Install Expo CLI
+#             command: npm install -g expo-cli
+#         - run:
+#             name: Install Detox CLI
+#             command: npm install -g detox-cli
+#         - run:
+#             name: Install CocoaPods
+#             command: sudo gem install cocoapods xcodeproj
+#         - run:
+#             name: Install Brew Wix
+#             command: brew tap wix/brew
+#         - run:
+#             name: Install Apple Sim Utils
+#             command: brew install applesimutils
+#         - run:
+#             name: Install Expo dependencies
+#             command: yarn install
+#         - run:
+#             name: Set Xcode Version
+#             command: sudo xcode-select -s /Applications/Xcode.app  # Adjust the path as necessary
+#         - run:
+#             name: Confirm Xcode Version
+#             command: xcodebuild -version
+#         - run:
+#             name: List Available Simulators
+#             command: xcrun simctl list devices available
+#         - run:
+#             name: Run Expo for iOS
+#             command: npx expo run:ios
+
+#   build_detox:
+#     macos:
+#       xcode: "15.2.0"
+#     steps:
+#       - checkout
+#       - run:
+#           name: Build Detox for iOS Debug
+#           command: yarn detox:ios:debug:build
+
+#   test_detox:
+#     macos:
+#       xcode: "15.2.0"
+#     steps:
+#       - checkout
+#       - run:
+#           name: Test Detox for iOS Debug
+#           command: yarn detox:ios:debug:test
+
+# workflows:
+#   version: 2
+#   build-and-test:
+#     jobs:
+#       - install_dependencies
+#       - build_ios:
+#           requires:
+#             - install_dependencies
+#       - build_detox:
+#           requires:
+#             - build_ios
+#       - test_detox:
+#           requires:
+#             - build_detox
+
 version: 2.1
-
-orbs:
-  node: circleci/node@4.1.0
-
 jobs:
-  install_dependencies:
+  build:
     docker:
-      - image: cimg/node:21.7.3
-    steps:
-      - checkout
-      - node/install-packages:
-          pkg-manager: yarn
-
-  build_ios:
-      macos:
-        xcode: "15.2.0"
-      steps:
-        - checkout
-        - run:
-            name: Install Expo CLI
-            command: npm install -g expo-cli
-        - run:
-            name: Install Detox CLI
-            command: npm install -g detox-cli
-        - run:
-            name: Install CocoaPods
-            command: sudo gem install cocoapods xcodeproj
-        - run:
-            name: Install Brew Wix
-            command: brew tap wix/brew
-        - run:
-            name: Install Apple Sim Utils
-            command: brew install applesimutils
-        - run:
-            name: Install Expo dependencies
-            command: yarn install
-        - run:
-            name: Set Xcode Version
-            command: sudo xcode-select -s /Applications/Xcode.app  # Adjust the path as necessary
-        - run:
-            name: Confirm Xcode Version
-            command: xcodebuild -version
-        - run:
-            name: List Available Simulators
-            command: xcrun simctl list devices available
-        - run:
-            name: Run Expo for iOS
-            command: npx expo run:ios
-
-  build_detox:
-    macos:
-      xcode: "15.2.0"
+      - image: cimg/base:stable
     steps:
       - checkout
       - run:
-          name: Build Detox for iOS Debug
-          command: yarn detox:ios:debug:build
-
-  test_detox:
-    macos:
-      xcode: "15.2.0"
-    steps:
-      - checkout
-      - run:
-          name: Test Detox for iOS Debug
-          command: yarn detox:ios:debug:test
-
-workflows:
-  version: 2
-  build-and-test:
-    jobs:
-      - install_dependencies
-      - build_ios:
-          requires:
-            - install_dependencies
-      - build_detox:
-          requires:
-            - build_ios
-      - test_detox:
-          requires:
-            - build_detox
+          name: Test Download Speed
+          command: |
+            curl -o /dev/null -s -w 'Total time: %{time_total}s\n' https://example.com/largefile.zip
